@@ -6,7 +6,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from shapely.geometry import Point
 
-
 def find_points_in_zone(df,shape_file_name):
     """
     takes a dataframe and a finds which points are in the geaographic zones given in an input shape file
@@ -84,7 +83,7 @@ community_data.columns = community_data.columns.map('_'.join)
 community_data.rename(columns={'comm_plan_name_':'Community', 'case_age_days_mean':'Mean Time to Repair', 'case_age_days_count':'count'},inplace=True)
 community_filtered = community_data[community_data['count'].ge(10)].reset_index(drop=True)
 
-"""
+
 in_out_of_zone = find_points_in_zone(street_light_data[['case_age_days','lat','lng','council_district','year']].reset_index(drop=True),'data/promise_zone_datasd.geojson')
 in_out_of_zone['name'] = in_out_of_zone['name'].fillna(value='Rest of City')
 in_out_data = in_out_of_zone[['year','name','case_age_days']].groupby(['year','name']).agg(['mean','median','count','std'])
@@ -95,7 +94,6 @@ in_out_plot_prep.plot()
 
 crime_data = pd.read_csv('data/ARJISPublicCrime091422.txt')
 crime_data['address'] = crime_data['BLOCK_ADDRESS'].str.replace(' BLOCK ','',regex=False)
-
-safety_adjacent_data = full_data[full_data['service_name'].isin(['Graffiti - Code Enforcement', 'Illegal Dumping','Graffiti','Encampment','Homeless Outreach',])].reset_index(drop=True)
-
-"""
+# link crime_data['address'] to street_light_data['street_address'] to determing the crime reports that can be related to a lack of light
+# only nighttime crime reprots should be considered, and only those after the street light reprot came in
+# however the variable of these two text fields will make this dificult
