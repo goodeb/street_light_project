@@ -2,10 +2,10 @@
 Code and files for street light repair resource allocation project
 
 # file descriptions
- explore.py: A scratch file for recording code used to explore the data sets
- street_light_project.py: The main project code
- distance_filtering.py: The code used produce a count of safety related requests geographically near and after every open street light repair request.
- geo_testing.py: Code used to work out how to filter data points inside from those outside the Promise Zone boundaries
+explore.py: A scratch file for recording code used to explore the data sets
+street_light_project.py: The main project code
+distance_filtering.py: The code used produce a count of safety related requests geographically near and after every open street light repair request.
+geo_testing.py: Code used to work out how to filter data points inside from those outside the Promise Zone boundaries
  
 
 # instructions
