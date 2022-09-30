@@ -2,11 +2,12 @@
 Code and files for street light repair resource allocation project
 
 # file descriptions
--explore.py: A scratch file for recording code used to explore the data sets
--street_light_project.py: The main project code
--distance_filtering.py: The code used produce a count of safety related requests geographically near and after every open street light repair request.
--geo_testing.py: Code used to work out how to filter data points inside from those outside the Promise Zone boundaries
- 
+- `explore.py`: A scratch file for recording code used to explore the data sets
+- `street_light_project.py`: The main project code
+- `distance_filtering.py`: The code used produce a count of safety related requests geographically near and after every open street light repair request.
+- `geo_testing.py`: Code used to work out how to filter data points inside from those outside the Promise Zone boundaries
+## non-code files
+- `Street_light_project_documentation.pdf`: Internal documentation on process and methodology 
 
 # instructions
 1) Reproduce the data directory
@@ -19,4 +20,4 @@ If you want to explore the crime data set
 2) Run the distance_filtering script
 
 3) Run the project main script: street_light_project.py:
-    If you want to make and save the graphs, give the graph argument after the name of the python file
+    If you want to make and save the graphs, give the graph argument after the name of the python file. These will be written to the graphs directory
