@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 from shapely.geometry import Point
 import datetime
 
+
 def read_closed_requests(year_list):
     """
     reads in closed request data for multiple years, adds year data, and puts all the data together in a single df
@@ -27,8 +28,8 @@ def read_closed_requests(year_list):
     for year in year_list:
         file_name = f"data/get_it_done_requests_closed_{year}_datasd.csv"
         years_raw_data = pd.read_csv(file_name,
-                                usecols=['date_requested', 'case_age_days',
-                                         'service_name', 'service_name_detail',
+                                usecols=['service_request_id', 'service_request_parent_id','date_requested',
+                                         'case_age_days', 'service_name', 'service_name_detail',
                                          'date_closed', 'status', 'lat', 'lng', 'street_address', 'zipcode',
                                          'council_district', 'comm_plan_name', 'park_name',
                                          'case_origin'])
@@ -38,9 +39,11 @@ def read_closed_requests(year_list):
 
 
 # read and format the open requests
-open_reqs = pd.read_csv('data/get_it_done_requests_open_datasd.csv',usecols=['date_requested', 'case_age_days', 'service_name', 'service_name_detail',
-         'date_closed', 'status', 'lat', 'lng', 'street_address', 'zipcode',
-         'council_district', 'comm_plan_name', 'park_name', 'case_origin'])
+open_reqs = pd.read_csv('data/get_it_done_requests_open_datasd.csv',
+          usecols=['service_request_id', 'service_request_parent_id','date_requested',
+                   'case_age_days', 'service_name', 'service_name_detail',
+                   'date_closed', 'status', 'lat', 'lng', 'street_address', 'zipcode',
+                   'council_district', 'comm_plan_name', 'park_name', 'case_origin'])
 open_reqs['date_requested'] = pd.to_datetime(open_reqs['date_requested'])
 open_reqs['location'] = list(zip(open_reqs['lat'],open_reqs['lng']))
 open_reqs['location'] = open_reqs['location'].apply(Point)
@@ -67,10 +70,14 @@ i=0
 for light_req in open_street_lights.itertuples():
    after_the_light_broke =  safety_adjacent_data[safety_adjacent_data['date_requested'].gt(light_req.date_requested)].reset_index(drop=True)
    # a very cludge fix for the geopandas unit issue to use 150ft as the radius
-   near_the_broken_light = after_the_light_broke[after_the_light_broke['location'].distance(light_req.location).lt(0.0004838709677)]
+   near_the_broken_light = after_the_light_broke[after_the_light_broke['location'].distance(light_req.location).lt(0.0004880606298)]
    open_street_lights.at[light_req.Index, 'number_safety_related_near'] = len(near_the_broken_light)
    print(i)
    i += 1
-   
+
+# if the issue with the light is not that it won't come on then zero out the safety count
+open_street_lights.loc[open_street_lights['service_name_detail'].ne('STREET LIGHT OUT') & open_street_lights['service_name_detail'].ne('POLE KNOCK OVER/DAMAGE'),'number_safety_related_near'] = 0
+
+
 # write this to a file so that this doesn't need to be re-run to get the the counts again
 open_street_lights.to_csv('data/open_street_light_requests_with_saftey_counts.csv')
